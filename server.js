@@ -112,7 +112,7 @@ const N = (id) => C.NOUN_BY_ID[id];
 function newRoom() {
   const room = {
     code: makeCode(), hostId: null, players: [], phase: 'lobby', round: 0,
-    settings: { rounds: 10, timer: 45, targetVp: 50 },
+    settings: { rounds: 10, timer: 45 }, // rounds: 0 = Free Play (host finishes the game)
     deck: [], discard: [], challenge: null, lastTitle: '', timer: null, timerEnd: 0, phaseId: 0,
     reveal: null, peeks: {}, history: [], final: null, nextUid: 1, playOrder: 0, deleteTimer: null,
   };
@@ -511,7 +511,7 @@ function resolveRound(room) {
 function endRound(room) {
   if (room.phase !== 'reveal') return;
   if (room.pendingDiscard) { room.discard.push(...room.pendingDiscard); room.pendingDiscard = null; }
-  const done = room.round >= room.settings.rounds || room.players.some((p) => p.vp >= room.settings.targetVp);
+  const done = room.settings.rounds > 0 && room.round >= room.settings.rounds;
   if (done) return finishGame(room);
   for (const p of room.players) refill(room, p);
   startRound(room);
@@ -638,9 +638,8 @@ function onConnection(socket) {
   socket.on('settings', (s = {}) => {
     const { room, p } = ctx();
     if (!isHost(room, p) || room.phase !== 'lobby') return;
-    if ([5, 10, 15].includes(s.rounds)) room.settings.rounds = s.rounds;
+    if ([5, 10, 15, 0].includes(s.rounds)) room.settings.rounds = s.rounds;
     if ([0, 30, 45, 60, 90].includes(s.timer)) room.settings.timer = s.timer;
-    if ([40, 50, 75, 100].includes(s.targetVp)) room.settings.targetVp = s.targetVp;
     broadcast(room);
   });
   socket.on('start', () => {
@@ -654,6 +653,7 @@ function onConnection(socket) {
     if (room && p && !doDiscard(room, p, uids)) socket.emit('err', "You can't discard right now.");
   });
   socket.on('bet', ({ side, amount } = {}) => { const { room, p } = ctx(); if (room && p) doBet(room, p, side, amount); });
+  socket.on('finish', () => { const { room, p } = ctx(); if (isHost(room, p) && ['play', 'bet', 'reveal'].includes(room.phase)) finishGame(room); });
   socket.on('next', () => { const { room, p } = ctx(); if (isHost(room, p) && room.phase === 'reveal') endRound(room); });
   socket.on('again', () => {
     const { room, p } = ctx();

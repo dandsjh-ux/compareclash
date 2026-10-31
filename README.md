@@ -56,7 +56,7 @@ Games are kept in memory. Restarting or redeploying the service ends any games i
 4. **Reveal**: cards flip, actions resolve in this order: Reverse → Swap → Boost/Shrink → Double → Steal. Shield and Mirror protect against targeted actions.
 5. The winner gets 5 VP and bets are paid. Then the sentence appears.
 
-The game ends after the chosen number of rounds, or as soon as someone reaches the target VP.
+Choose **5, 10 or 15 rounds**, or **Free Play**. The highest earner at the end wins. In Free Play there is no round limit; the host presses **Finish game** whenever they like.
 
 ### Action cards (16)
 | Card | Qty | Effect |

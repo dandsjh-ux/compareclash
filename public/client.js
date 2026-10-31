@@ -179,9 +179,9 @@
         ${host && S.players.length < 4 ? '<button class="btn ghost addbot" data-act="addBot">+ Add a computer player</button>' : ''}
       </div>
       <h3>Settings</h3>
-      <div class="setrow"><span>Rounds</span>${opt('rounds', [5, 10, 15], S.settings.rounds, (v) => v)}</div>
+      <div class="setrow"><span>Rounds</span>${opt('rounds', [5, 10, 15, 0], S.settings.rounds, (v) => (v ? v : 'Free Play'))}</div>
+      <p class="small">${S.settings.rounds ? `The highest earner after ${S.settings.rounds} rounds wins.` : 'Play as many rounds as you like. The host presses Finish game, and the highest earner wins.'}</p>
       <div class="setrow"><span>Turn timer</span>${opt('timer', [30, 45, 60, 90, 0], S.settings.timer, (v) => (v ? v + 's' : 'Off'))}</div>
-      <div class="setrow"><span>Win at</span>${opt('targetVp', [40, 50, 75, 100], S.settings.targetVp, (v) => v + ' VP')}</div>
       <div class="lobbybtns">
         ${host ? `<button class="btn big" data-act="start" ${S.players.length < 2 ? 'disabled' : ''}>${S.players.length < 2 ? 'Need 2+ players' : 'Start game ▶'}</button>` : '<p class="wait">Waiting for the host to start…</p>'}
         <button class="link" data-act="rules">How to play</button>
@@ -470,7 +470,7 @@
   function renderHud(G, me, opps) {
     const host = S.hostId === S.you;
     const tl = timerEnd ? Math.max(0, Math.ceil((timerEnd - Date.now()) / 1000)) : null;
-    setHTML($('#hudTop'), `<div class="roominfo"><b>Room ${S.code}</b><span>Round ${Math.min(S.round, S.settings.rounds)}/${S.settings.rounds}</span><span>Win at ${S.settings.targetVp} VP</span></div>
+    setHTML($('#hudTop'), `<div class="roominfo"><b>Room ${S.code}</b><span>${S.settings.rounds ? `Round ${Math.min(S.round, S.settings.rounds)} of ${S.settings.rounds}` : `Round ${S.round} · Free Play`}</span></div>
       <div id="timer" class="${tl == null ? 'hidden' : ''}"></div>`);
     updateTimer();
     $('[data-act="sound"]').textContent = ui.muted ? '🔇' : '🔊';
@@ -588,7 +588,7 @@
     const html = `<div class="rhead">Round ${rv.round} · ${esc(rv.finalChallenge.title)}${rv.mult > 1 ? ' <span class="x2">×' + rv.mult + '</span>' : ''}</div>
       <div class="lines">${rv.lines.map((l, i) => `<p class="${i ? 'sub' : 'main'}">${esc(l)}</p>`).join('')}</div>
       <div class="dchips">${chips}</div>
-      <div class="row"><button class="btn ghost small" data-act="say">🔊 Hear it</button>${host ? '<button class="btn" data-act="next">Next round ▶</button>' : '<span class="small">Next round starting soon…</span>'}</div>`;
+      <div class="row"><button class="btn ghost small" data-act="say">🔊 Hear it</button>${host ? `${!S.settings.rounds || rv.round < S.settings.rounds ? '<button class="btn" data-act="next">Next round ▶</button>' : '<button class="btn" data-act="next">See results ▶</button>'}${!S.settings.rounds ? '<button class="btn red small" data-act="finish">Finish game</button>' : ''}` : '<span class="small">Next round starting soon…</span>'}</div>`;
     setHTML(box, html);
   }
 
@@ -687,6 +687,7 @@
       case 'bet': socket.emit('bet', { side: ui.betSide, amount: ui.betAmt }); sfx('coin'); break;
       case 'nobet': socket.emit('bet', { side: 'none', amount: 0 }); sfx('click'); break;
       case 'next': socket.emit('next'); break;
+      case 'finish': if (window.confirm('Finish the game now? The highest earner wins.')) socket.emit('finish'); break;
       case 'again': socket.emit('again'); break;
       case 'say': if (RV) { const v = ui.voice; ui.voice = true; speak(RV.rv.lines); ui.voice = v; } break;
       case 'sound': ui.muted = !ui.muted; localStorage.setItem('cc_mute', ui.muted ? '1' : '0'); render(); break;
