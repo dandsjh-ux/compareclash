@@ -181,6 +181,8 @@
       <h3>Settings</h3>
       <div class="setrow"><span>Rounds</span>${opt('rounds', [5, 10, 15, 0], S.settings.rounds, (v) => (v ? v : 'Free Play'))}</div>
       <p class="small">${S.settings.rounds ? `The highest earner after ${S.settings.rounds} rounds wins.` : 'Play as many rounds as you like. The host presses Finish game, and the highest earner wins.'}</p>
+      <div class="setrow"><span>Gambit</span>${opt('gambit', [1, 0], S.settings.gambit ? 1 : 0, (v) => (v ? 'On' : 'Off'))}</div>
+      <p class="small">${S.settings.gambit ? '<b>On:</b> before the cards are revealed, players can bet Vocab Points that their card will WIN or LOSE.' : '<b>Off:</b> no betting at all. Players simply pick their best card, and Vocab Points only come from winning rounds. Peek cards are taken out of the deck, because they are only for betting. Best for younger children.'}</p>
       <div class="setrow"><span>Turn timer</span>${opt('timer', [30, 45, 60, 90, 0], S.settings.timer, (v) => (v ? v + 's' : 'Off'))}</div>
       <div class="lobbybtns">
         ${host ? `<button class="btn big" data-act="start" ${S.players.length < 2 ? 'disabled' : ''}>${S.players.length < 2 ? 'Need 2+ players' : 'Start game ▶'}</button>` : '<p class="wait">Waiting for the host to start…</p>'}
@@ -470,7 +472,7 @@
   function renderHud(G, me, opps) {
     const host = S.hostId === S.you;
     const tl = timerEnd ? Math.max(0, Math.ceil((timerEnd - Date.now()) / 1000)) : null;
-    setHTML($('#hudTop'), `<div class="roominfo"><b>Room ${S.code}</b><span>${S.settings.rounds ? `Round ${Math.min(S.round, S.settings.rounds)} of ${S.settings.rounds}` : `Round ${S.round} · Free Play`}</span></div>
+    setHTML($('#hudTop'), `<div class="roominfo"><b>Room ${S.code}</b><span>${S.settings.rounds ? `Round ${Math.min(S.round, S.settings.rounds)} of ${S.settings.rounds}` : `Round ${S.round} · Free Play`}</span>${S.settings.gambit ? '' : '<span>No betting</span>'}</div>
       <div id="timer" class="${tl == null ? 'hidden' : ''}"></div>`);
     updateTimer();
     $('[data-act="sound"]').textContent = ui.muted ? '🔇' : '🔊';

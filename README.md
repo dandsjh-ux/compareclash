@@ -7,7 +7,7 @@ read the challenge card and play the word card that fits best.
 - **100-card deck**: 84 illustrated nouns in 7 categories (animals, food, transport, buildings, home, nature, toys) plus 16 action cards
 - **Hand of 6**, refilled after every round. **3 free discards** per game (up to 2 cards each), then 3 VP each
 - **Vocab Points (VP)**: everyone starts with 20. Winning a round pays 5 VP
-- **Gambit**: bet that you'll WIN (pays 1:1) or LOSE (pays 2:1), up to a third of your VP
+- **Gambit** (optional, chosen in the lobby): bet that you'll WIN (pays 1:1) or LOSE (pays 2:1), up to a third of your VP. Switch it **Off** for younger children: there's no betting, VP only come from winning rounds, and the 2 Peek cards are taken out of the deck
 - After every round the game shows a sentence and can read it aloud, e.g. *"A barn is bigger than a car."* *"The bee is the slowest!"*
 - Computer players can fill empty seats. They also take over for anyone who disconnects or runs out of time
 

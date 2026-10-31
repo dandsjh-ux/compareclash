@@ -112,7 +112,7 @@ const N = (id) => C.NOUN_BY_ID[id];
 function newRoom() {
   const room = {
     code: makeCode(), hostId: null, players: [], phase: 'lobby', round: 0,
-    settings: { rounds: 10, timer: 45 }, // rounds: 0 = Free Play (host finishes the game)
+    settings: { rounds: 10, timer: 45, gambit: true }, // rounds: 0 = Free Play (host finishes the game)
     deck: [], discard: [], challenge: null, lastTitle: '', timer: null, timerEnd: 0, phaseId: 0,
     reveal: null, peeks: {}, history: [], final: null, nextUid: 1, playOrder: 0, deleteTimer: null,
   };
@@ -198,7 +198,7 @@ function buildDeck(room) {
   room.nextUid = 1;
   const d = [];
   for (const n of C.NOUNS) d.push({ uid: 'c' + room.nextUid++, type: 'noun', id: n.id });
-  for (const [id, a] of Object.entries(C.ACTIONS)) for (let i = 0; i < a.count; i++) d.push({ uid: 'c' + room.nextUid++, type: 'action', id });
+  for (const [id, a] of Object.entries(C.ACTIONS)) for (let i = 0; i < (id === 'peek' && !room.settings.gambit ? 0 : a.count); i++) d.push({ uid: 'c' + room.nextUid++, type: 'action', id });
   room.deck = shuffle(d);
   room.discard = [];
 }
@@ -322,6 +322,10 @@ function resolveTarget(src, tgt) {
 }
 
 function startBet(room) {
+  if (!room.settings.gambit) { // betting switched off: skip straight to the reveal
+    for (const p of room.players) p.bet = { side: 'none', amount: 0 };
+    return resolveRound(room);
+  }
   room.phaseId++; room.phase = 'bet'; room.peeks = {};
   for (const p of room.players) {
     const a = p.play.action;
@@ -449,7 +453,7 @@ function resolveRound(room) {
     steps.push({ t: 'shrink', by: r.src.id, on: r.tgt.id, text: r.reflected ? `${r.src.name}'s MIRROR bounces the SHRINK back at ${r.tgt.name}!` : `${x.p.name} SHRINKS ${r.tgt.name}'s card: −2 power!` });
   });
   let mult = 1;
-  for (const x of withA('double')) { mult *= 2; steps.push({ t: 'double', by: x.p.id, text: `${x.p.name} played DOUBLE — prize and bets ×2!` }); }
+  for (const x of withA('double')) { mult *= 2; steps.push({ t: 'double', by: x.p.id, text: `${x.p.name} played DOUBLE — ${room.settings.gambit ? 'prize and bets' : 'prize'} ×2!` }); }
   for (const x of withA('peek')) targeted(x, 'PEEK', (r, t) => {
     steps.push({ t: 'peek', by: x.p.id, on: t.id, text: r.reflected ? `${t.name}'s MIRROR let them peek back at ${x.p.name}!` : `${x.p.name} peeked at ${t.name}'s card.` });
   });
@@ -640,6 +644,7 @@ function onConnection(socket) {
     if (!isHost(room, p) || room.phase !== 'lobby') return;
     if ([5, 10, 15, 0].includes(s.rounds)) room.settings.rounds = s.rounds;
     if ([0, 30, 45, 60, 90].includes(s.timer)) room.settings.timer = s.timer;
+    if (s.gambit !== undefined) room.settings.gambit = !!s.gambit;
     broadcast(room);
   });
   socket.on('start', () => {
