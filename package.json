@@ -1,0 +1,13 @@
+{
+  "name": "compare-clash",
+  "version": "1.0.0",
+  "description": "Compare Clash - a multiplayer comparatives & vocabulary card battle for young learners",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

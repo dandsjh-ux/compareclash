@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Compare Clash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='14' y='6' width='72' height='88' rx='12' fill='%236a4cff'/><text x='50' y='66' font-size='46' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='900'>&gt;</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HOME -->
+  <section id="home" class="screen">
+    <div class="floaters" id="floaters"></div>
+    <div class="panel homebox">
+      <div class="logo-big"><span class="l1">Compare</span><span class="l2">Clash</span></div>
+      <p class="tag">The comparative card battle! <b>bigger</b> · <b>faster</b> · <b>more expensive</b></p>
+      <label class="field">Your name<input id="nameIn" maxlength="14" autocomplete="off" placeholder="Type your name" /></label>
+      <button id="createBtn" class="btn big">Create a game</button>
+      <div class="or"><span>or join a friend</span></div>
+      <div class="joinrow">
+        <input id="codeIn" maxlength="4" autocomplete="off" placeholder="CODE" />
+        <button id="joinBtn" class="btn teal">Join</button>
+      </div>
+      <button class="link" data-act="rules">How to play</button>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="lobby" class="screen hidden">
+    <div class="panel lobbybox" id="lobbyBox"></div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="screen hidden">
+    <div id="table"><div class="felt"></div></div>
+    <div id="hud">
+      <div id="hudTop"></div>
+      <div id="hudBtns">
+        <button class="iconbtn" data-act="sound" title="Sound effects"></button>
+        <button class="iconbtn" data-act="voice" title="Read sentences aloud"></button>
+        <button class="iconbtn" data-act="rules" title="How to play">?</button>
+        <button class="iconbtn" data-act="leave" title="Leave game">⏏</button>
+      </div>
+      <div id="seats"></div>
+      <div id="hint"></div>
+      <div id="controls"></div>
+      <div id="betPanel"></div>
+      <div id="badges"></div>
+      <div id="actToast"></div>
+      <div id="results"></div>
+      <div id="fx"></div>
+    </div>
+  </section>
+
+  <!-- GAME OVER -->
+  <div id="over" class="modal hidden"></div>
+
+  <!-- RULES -->
+  <div id="rules" class="modal hidden">
+    <div class="panel rulesbox">
+      <button class="close" data-act="closeRules">✕</button>
+      <h2>How to play Compare Clash</h2>
+      <ol>
+        <li><b>Read the challenge card</b> in the middle, e.g. <i>BIGGER?</i>, <i>CHEAPER?</i> or <i>Closest in size to a bus</i>.</li>
+        <li><b>Pick your best word card</b> from your hand of 6. Think about the real thing: is a barn bigger than a car?</li>
+        <li><b>Add one action card</b> if you like (Boost, Shrink, Reverse…).</li>
+        <li><b>Gambit:</b> bet Vocab Points that you will <b>WIN</b> (pays 1:1) or <b>LOSE</b> (pays 2:1). Great for a weak hand!</li>
+        <li>Cards flip, actions happen, and the winner gets <b>5 VP</b>. Read the sentence: <i>“A barn is bigger than a car.”</i></li>
+      </ol>
+      <p><b>Discards:</b> 3 free per game — swap up to 2 cards each time. After that it costs 3 VP.</p>
+      <p><b>Some words can’t play!</b> A house <i>can’t move</i>, and the sun <i>can’t be bought</i>. Those cards are out of the round.</p>
+      <div class="rulegrid" id="ruleActions"></div>
+      <p class="small">Everyone starts with 20 VP. First to the target VP, or the most VP after the last round, wins!</p>
+    </div>
+  </div>
+
+  <div id="toastMsg"></div>
+
+  <script src="cards.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
