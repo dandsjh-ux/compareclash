@@ -235,6 +235,67 @@
       c(50, 72, 19.8, '#ff9f43', 1) + c(50, 48, 13.8, '#ff9f43', 1) + c(50, 62, 6, '#6b4226') + r(41, 76, 18, 4, '#6b4226', 1) + l(48, 4, 48, 78) + l(52, 4, 52, 78))),
   };
 
+
+  /* ---------- 20 extra word cards ---------- */
+  Object.assign(ART, {
+    shark: svg(p('M42 37L52 16L62 38Z', '#7d9bc4') + p('M6 54Q20 34 52 36Q72 37 84 48L96 32L94 56L96 78L84 62Q70 72 46 72Q20 72 6 54Z', '#7d9bc4') +
+      p('M10 58Q26 70 50 70Q68 70 80 62Q50 64 10 58Z', '#e8f1fb') + p('M40 64L28 82L54 68Z', '#6a88b0') + eye(22, 49) + p('M33 47Q31 53 33 58M38 46Q36 52 38 58') +
+      p('M9 58Q17 62 26 60') + p('M13 59l2 3l2-3l2 3l2-3', '#fff')),
+    butterfly: svg(e(32, 36, 19, 16, '#ff8fb6', -20) + e(68, 36, 19, 16, '#ff8fb6', 20) + e(36, 65, 12, 13, '#9b6bff', 20) + e(64, 65, 12, 13, '#9b6bff', -20) +
+      c(30, 34, 5, '#ffd23f') + c(70, 34, 5, '#ffd23f') + c(36, 66, 3.5, '#fff') + c(64, 66, 3.5, '#fff') + p('M48 22Q42 10 36 8') + p('M52 22Q58 10 64 8') +
+      dot(36, 8, 2.4) + dot(64, 8, 2.4) + e(50, 54, 5, 24, '#5a3a2a') + c(50, 26, 6.5, '#5a3a2a') + dot(48, 25, 1.2, '#fff') + dot(52, 25, 1.2, '#fff')),
+    kangaroo: svg(sh(30) + tube('M58 76Q80 80 94 90', BROWN, 7) + e(44, 89, 14, 4, '#a86f3d') + e(54, 74, 11, 13, BROWN) + e(36, 14, 3.5, 9, BROWN, -10) + e(43, 15, 3.5, 9, BROWN, 15) +
+      e(46, 56, 15, 22, BROWN, -12) + e(44, 63, 8, 9, '#e3b98a') + c(44, 58, 4.5, BROWN) + dot(42.5, 57.5, 1.1) + dot(45.5, 57.5, 1.1) +
+      tube('M38 46L28 54', BROWN, 4) + e(36, 28, 10, 9, BROWN) + e(27, 31, 7, 5, BROWN) + eye(36, 25, 0.8) + dot(21, 30, 1.8)),
+    octopus: svg(sh(36) + tube('M30 52Q20 72 12 70', '#ff7aa8', 7) + tube('M38 56Q34 80 26 86', '#ff7aa8', 7) + tube('M46 58Q46 84 40 92', '#ff7aa8', 7) +
+      tube('M54 58Q56 84 62 92', '#ff7aa8', 7) + tube('M62 56Q68 80 76 86', '#ff7aa8', 7) + tube('M70 52Q80 72 88 70', '#ff7aa8', 7) +
+      e(50, 38, 25, 23, '#ff7aa8') + c(38, 22, 3, '#ffb3cc') + c(62, 20, 4, '#ffb3cc') + c(50, 16, 2.5, '#ffb3cc') + eye(41, 38, 1.4) + eye(59, 38, 1.4) + smile(50, 48, 5) + blush(33, 46) + blush(67, 46)),
+    parrot: svg(tube('M8 80L92 80', WOOD, 6) + p('M46 70L40 96L56 96L56 70Z', '#4aa3ff') + e(52, 54, 16, 22, '#ef4b4b') + e(59, 58, 9, 17, '#4aa3ff', -10) +
+      e(61, 65, 6, 8, '#ffd23f', -10) + p('M44 76L42 82M54 76L56 82') + c(48, 30, 14, '#ef4b4b') + e(43, 30, 6.5, 6.5, '#fff') + eye(43, 29, 0.9) +
+      p('M35 28Q26 30 30 42Q35 38 38 35Z', '#ffd23f')),
+    burger: svg(sh(36) + p('M18 66L82 66Q82 82 68 82L32 82Q18 82 18 66Z', '#e8a25a') + r(15, 56, 70, 11, '#7a4a2a', 5) +
+      p('M18 54L82 54L76 61L66 56L56 63L46 56L36 63L26 56Z', '#ffd23f') + p('M15 52Q21 45 28 52Q34 45 40 52Q46 45 52 52Q58 45 64 52Q70 45 76 52Q82 45 85 52L85 55L15 55Z', '#6cc551') +
+      r(20, 45, 60, 6, '#ef4b4b', 3) + p('M16 46Q16 18 50 18Q84 18 84 46Z', '#f2b065') + e(36, 30, 2.5, 1.5, '#fff4dc') + e(50, 26, 2.5, 1.5, '#fff4dc') + e(62, 32, 2.5, 1.5, '#fff4dc') + e(44, 36, 2.5, 1.5, '#fff4dc')),
+    lemon: svg(sh(26, 86) + e(21, 64, 6, 4, '#ffe14d', -15) + e(79, 44, 6, 4, '#ffe14d', -15) + e(50, 54, 30, 22, '#ffe14d', -15) + p('M64 30Q66 22 70 18') +
+      e(74, 22, 9, 4.5, '#6cc551', -35) + shine(38, 44, 6, 3, -15) + eye(42, 55) + eye(58, 51) + smile(51, 62, 4)),
+    cookie: svg(sh(30, 90) + c(50, 54, 32, '#d9a060') + c(50, 54, 26, 'none') +
+      [[38, 40], [58, 36], [66, 54], [44, 60], [56, 70], [32, 56], [50, 48]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="4" ry="3" fill="#5a3520" stroke="none"/>`).join('')),
+    submarine: svg('<path d="M4 90q8-4 16 0t16 0t16 0t16 0t16 0t16 0" fill="none" stroke="#4aa3ff" stroke-width="3"/>' + c(92, 30, 3, '#dff3ff') + c(86, 20, 2.2, '#dff3ff') +
+      p('M56 28L56 14L68 14') + r(42, 26, 24, 18, '#ffd23f', 4) + p('M12 58L2 48L2 68Z', '#9aa3b5') +
+      p('M10 58Q10 42 30 42L76 42Q94 42 94 58Q94 74 76 74L30 74Q10 74 10 58Z', '#ffd23f') + c(32, 58, 5.5, GLASS) + c(50, 58, 5.5, GLASS) + c(68, 58, 5.5, GLASS) + l(14, 66, 88, 66)),
+    hotairballoon: svg(p('M50 6Q86 6 86 38Q86 58 62 70L38 70Q14 58 14 38Q14 6 50 6Z', '#ef4b4b') + p('M50 6Q34 30 40 70L60 70Q66 30 50 6Z', '#ffd23f') +
+      p('M50 6Q24 26 30 62M50 6Q76 26 70 62') + l(40, 70, 42, 80) + l(60, 70, 58, 80) + p('M50 71Q54 75 50 79Q46 75 50 71Z', '#ffb020') +
+      r(40, 80, 20, 14, WOOD, 2) + l(40, 86, 60, 86) + l(47, 80, 47, 94) + l(53, 80, 53, 94)),
+    fireengine: svg(sh(44, 86) + r(10, 30, 56, 6, '#d5dae3', 2) + l(18, 30, 18, 36) + l(28, 30, 28, 36) + l(38, 30, 38, 36) + l(48, 30, 48, 36) + l(58, 30, 58, 36) +
+      r(74, 37, 9, 7, '#4aa3ff', 2) + r(5, 40, 68, 32, '#ef4b4b', 4) + p('M72 72L72 44L84 44L95 58L95 72Z', '#ef4b4b') + p('M75 48L83 48L91 58L75 58Z', GLASS) +
+      r(5, 58, 67, 4, '#fff') + c(40, 50, 6, '#ffd23f') + c(40, 50, 2.5, '#9aa3b5') + c(24, 74, 9, TYRE) + c(24, 74, 3.5, HUB) + c(80, 74, 9, TYRE) + c(80, 74, 3.5, HUB)),
+    school: svg(sh(42, 90) + l(50, 18, 50, 5) + p('M50 5L61 8L50 11Z', '#4aa3ff') + r(14, 40, 72, 48, '#ffcf9c') + p('M9 42L50 17L91 42Z', '#d94a3a') +
+      c(50, 32, 5.5, '#fff') + l(50, 32, 50, 28.5) + l(50, 32, 53, 33) + r(42, 64, 16, 24, '#4aa3ff', 2) + l(50, 64, 50, 88) +
+      r(20, 48, 13, 10, GLASS, 1) + r(67, 48, 13, 10, GLASS, 1) + r(20, 68, 13, 10, GLASS, 1) + r(67, 68, 13, 10, GLASS, 1) + r(38, 46, 24, 8, '#fff', 2)),
+    stadium: svg(l(10, 58, 10, 20) + l(90, 58, 90, 20) + r(4, 12, 12, 8, '#ffd23f', 2) + r(84, 12, 12, 8, '#ffd23f', 2) +
+      p('M6 60L6 72Q50 96 94 72L94 60Z', '#b0b9c9') + l(20, 70, 20, 80) + l(35, 74, 35, 85) + l(50, 76, 50, 87) + l(65, 74, 65, 85) + l(80, 70, 80, 80) +
+      e(50, 60, 44, 16, '#c7cedb') + e(50, 60, 32, 10, '#6cc551') + l(50, 50, 50, 70) + e(50, 60, 5, 3, 'none')),
+    toothbrush: svg(g('rotate(-35 50 50)', r(6, 46, 66, 9, '#4aa3ff', 4.5) + r(66, 44, 24, 12, '#4aa3ff', 4) + r(68, 32, 20, 12, '#fff', 2) +
+      l(72, 32, 72, 44) + l(77, 32, 77, 44) + l(82, 32, 82, 44) + e(78, 27, 10, 5, '#7fe0d0') + r(20, 48, 20, 5, '#9be3c5', 2.5))),
+    laptop: svg(sh(42, 82) + r(18, 14, 64, 46, K, 5) + r(23, 19, 54, 36, '#7fd1ff', 2) + r(28, 24, 22, 14, '#fff', 2) + c(64, 30, 6, '#ffd23f') +
+      r(28, 42, 40, 4, '#4aa3ff', 2) + p('M8 62L92 62L86 78L14 78Z', '#c7cedb') + l(22, 67, 78, 67) + l(20, 71, 80, 71) + r(42, 73, 16, 3.5, '#9aa3b5', 1.5)),
+    sofa: svg(sh(42, 88) + r(14, 32, 72, 30, '#4aa3ff', 8) + r(20, 37, 27, 19, '#7fc0ff', 6) + r(53, 37, 27, 19, '#7fc0ff', 6) +
+      r(18, 56, 64, 17, '#5fb0ff', 5) + l(50, 56, 50, 73) + r(5, 44, 17, 33, '#2f7fd6', 7) + r(78, 44, 17, 33, '#2f7fd6', 7) + r(11, 77, 6, 8, WOOD, 1) + r(83, 77, 6, 8, WOOD, 1)),
+    iceberg: svg(pn('M0 58L100 58L100 100L0 100Z', '#9fd3ff') + p('M10 58L90 58L80 86L56 96L24 90Z', '#c9e8f8') +
+      p('M16 58L30 28L42 34L54 10L70 30L84 58Z', '#f4fbff') + pn('M54 10L70 30L84 58L62 58L60 34Z', '#d3ecfa') + eye(38, 46) + eye(54, 44) + smile(46, 51, 3) +
+      '<path d="M0 58q8-4 16 0t16 0t16 0t16 0t16 0t16 0" fill="none" stroke="#fff" stroke-width="2.5"/>'),
+    mushroom: svg(sh(26, 90) + p('M40 56L38 84Q50 90 62 84L60 56Z', '#fff4dc') + p('M12 58Q12 16 50 16Q88 16 88 58Q50 66 12 58Z', '#ef4b4b') +
+      c(31, 40, 5, '#fff') + c(52, 28, 6, '#fff') + c(71, 44, 5.5, '#fff') + c(46, 50, 3.5, '#fff') + dot(45, 70, 1.8) + dot(55, 70, 1.8) + smile(50, 75, 3) +
+      '<path d="M26 88l3-7l3 7M66 88l3-6l3 6" fill="none" stroke="#3f9b45"/>'),
+    robot: svg(sh(26, 92) + l(50, 14, 50, 6) + c(50, 5, 3.2, '#ef4b4b') + tube('M30 50L16 66', '#c7cedb', 6) + tube('M70 50L84 66', '#c7cedb', 6) +
+      r(34, 76, 11, 13, '#c7cedb', 2) + r(55, 76, 11, 13, '#c7cedb', 2) + r(28, 42, 44, 36, '#9aa3b5', 6) + r(38, 50, 24, 15, '#fff', 3) +
+      c(44, 57.5, 2.6, '#ef4b4b') + c(50, 57.5, 2.6, '#ffd23f') + c(56, 57.5, 2.6, '#6cc551') + r(27, 21, 5, 12, '#ef4b4b', 2) + r(68, 21, 5, 12, '#ef4b4b', 2) +
+      r(31, 13, 38, 28, '#c7cedb', 7) + c(42, 26, 5.5, '#7fd1ff') + c(58, 26, 5.5, '#7fd1ff') + dot(43, 26, 2) + dot(59, 26, 2) + r(42, 34, 16, 3, K, 1.5)),
+    trumpet: svg('<path d="M74 22L74 8L82 6" fill="none"/>' + dot(72, 23, 3.2) + tube('M24 58Q24 74 38 74L52 74Q62 74 62 58', '#ffd23f', 5) +
+      r(29, 30, 9, 4, '#e0a800', 2) + r(39, 30, 9, 4, '#e0a800', 2) + r(49, 30, 9, 4, '#e0a800', 2) + r(31, 34, 5, 14, '#ffd23f', 2) + r(41, 34, 5, 14, '#ffd23f', 2) + r(51, 34, 5, 14, '#ffd23f', 2) +
+      r(12, 48, 54, 10, '#ffd23f', 4) + r(5, 49, 9, 8, '#e0a800', 2) + p('M62 48Q80 44 92 30L92 76Q80 62 62 58Z', '#ffc61a') + e(92, 53, 3.5, 23, '#e0a800')),
+  });
+
   /* ---------- action card icons ---------- */
   const W = '#fff';
   const ACTION_ART = {
@@ -371,6 +432,28 @@
     ['kite', 'kite', 'toy', 1, 0.3, 30, 20, 0, 20],
     ['drum', 'drum', 'toy', 0.5, 5, null, 150, 110, 20],
     ['guitar', 'guitar', 'toy', 1, 3, null, 200, 90, 20],
+
+    /* 20 extra cards */
+    ['shark', 'shark', 'animal', 5, 1100, 56, null, 0, 22],
+    ['butterfly', 'butterfly', 'animal', 0.08, 0.0005, 20, null, 0, 28],
+    ['kangaroo', 'kangaroo', 'animal', 1.6, 85, 70, null, 40, 36],
+    ['octopus', 'octopus', 'animal', 0.9, 15, 40, null, 0, 15],
+    ['parrot', 'parrot', 'animal', 0.4, 1, 40, 1000, 110, 41],
+    ['burger', 'burger', 'food', 0.1, 0.25, null, 6, 0, 65],
+    ['lemon', 'lemon', 'food', 0.07, 0.1, null, 0.4, 0, 20],
+    ['cookie', 'cookie', 'food', 0.075, 0.03, null, 1, 0, 20],
+    ['submarine', 'submarine', 'transport', 100, 7000000, 46, 2000000000, 60, 15],
+    ['hotairballoon', 'hot-air balloon', 'transport', 20, 500, 15, 30000, 90, 100],
+    ['fireengine', 'fire engine', 'transport', 10, 15000, 120, 750000, 120, 20],
+    ['school', 'school', 'place', 60, 10000000, null, 20000000, 85, 22],
+    ['stadium', 'stadium', 'place', 300, 200000000, null, 1200000000, 125, 20],
+    ['toothbrush', 'toothbrush', 'home', 0.19, 0.02, null, 3.5, 0, 20],
+    ['laptop', 'laptop', 'home', 0.35, 2, null, 1200, 30, 35],
+    ['sofa', 'sofa', 'home', 2.2, 70, null, 700, 0, 20],
+    ['iceberg', 'iceberg', 'nature', 200, 1e11, 1, null, 0, -15],
+    ['mushroom', 'mushroom', 'nature', 0.08, 0.02, null, 0.6, 0, 15],
+    ['robot', 'robot', 'toy', 0.3, 1.5, 2, 60, 65, 25],
+    ['trumpet', 'trumpet', 'toy', 0.5, 1.1, null, 400, 120, 20],
   ];
 
   const article = (w) => (/^[aeiou]/i.test(w) ? 'an ' : 'a ') + w;
@@ -395,14 +478,14 @@
   /* ---------- action cards (16) ---------- */
   const ACTIONS = {
     reverse: { name: 'Reverse', count: 2, target: false, desc: 'Flip the challenge! Bigger becomes smaller.' },
-    swap:    { name: 'Swap', count: 2, target: true, desc: "Swap your word card with a player's card." },
-    shrink:  { name: 'Shrink', count: 2, target: true, desc: "A player's card loses 2 power." },
+    swap:    { name: 'Swap', count: 2, target: true, desc: 'Swap your card with the strongest rival card.' },
+    shrink:  { name: 'Shrink', count: 2, target: true, desc: 'The strongest rival card loses 2 power.' },
     boost:   { name: 'Boost', count: 3, target: false, desc: 'Your card gains 2 power.' },
     shield:  { name: 'Shield', count: 2, target: false, desc: 'Blocks Swap, Shrink, Steal and Peek.' },
     mirror:  { name: 'Mirror', count: 1, target: false, desc: 'Bounces an action back at the sender.' },
-    peek:    { name: 'Peek', count: 2, target: true, desc: "See a player's card before you bet." },
+    peek:    { name: 'Peek', count: 2, target: true, desc: 'See the strongest rival card before you bet.' },
     double:  { name: 'Double', count: 1, target: false, desc: 'Doubles the prize and all bets.' },
-    steal:   { name: 'Steal', count: 1, target: true, desc: "Take a random card from a player's hand." },
+    steal:   { name: 'Steal', count: 1, target: true, desc: 'Take a random card from the VP leader.' },
   };
 
   /* ---------- text helpers ---------- */

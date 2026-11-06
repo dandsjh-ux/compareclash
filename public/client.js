@@ -245,12 +245,13 @@
     const ch = Math.max(84, Math.min(H / 5, (W / 10) * 1.4));
     const cw = ch / 1.4;
     const G = { W, H, cw, ch };
-    G.chal = { x: W / 2, y: H * 0.39 };
-    G.deck = { x: W / 2 - cw * 1.75, y: H * 0.39 };
-    G.disc = { x: W / 2 + cw * 1.75, y: H * 0.39 };
-    G.mySlot = { x: W / 2, y: H * 0.585 };
+    G.chalS = 1.32; // the challenge card is drawn larger than the other cards so it is easy to read
+    G.chal = { x: W / 2, y: H * 0.405 };
+    G.deck = { x: W / 2 - cw * 2.0, y: H * 0.405 };
+    G.disc = { x: W / 2 + cw * 2.0, y: H * 0.405 };
+    G.mySlot = { x: W / 2, y: H * 0.615 };
     G.handY = H - ch * 0.5;
-    const top = (x) => ({ type: 'top', panel: { x, y: ch * 0.47 }, backs: { x, y: ch * 0.04 }, slot: { x, y: H * 0.2 } });
+    const top = (x) => ({ type: 'top', panel: { x, y: ch * 0.47 }, backs: { x, y: ch * 0.04 }, slot: { x, y: H * 0.19 } });
     const sx = Math.max(W * 0.19, cw * 1.5);
     const left = { type: 'left', panel: { x: 96, y: H * 0.2 }, backs: { x: cw * 0.08, y: H * 0.42 }, slot: { x: sx, y: H * 0.42 } };
     const right = { type: 'right', panel: { x: W - 96, y: H * 0.2 }, backs: { x: W - cw * 0.08, y: H * 0.42 }, slot: { x: W - sx, y: H * 0.42 } };
@@ -279,7 +280,7 @@
 
     if (S.challenge) {
       const info = RV ? RV.challenge : S.challenge.info;
-      T.set('ch-' + S.round, { ...G.chal, s: 1, z: 30, up: true, kind: 'chal', info, spawn: { x: G.W / 2, y: -G.ch, rot: -20, s: 1 } });
+      T.set('ch-' + S.round, { ...G.chal, s: G.chalS, z: 30, up: true, kind: 'chal', info, spawn: { x: G.W / 2, y: -G.ch, rot: -20, s: 1 } });
     }
 
     // my hand
@@ -439,7 +440,7 @@
     const to = seatCenter(id);
     if (!to) return;
     const fx = $('#fx');
-    const from = { x: table.clientWidth / 2, y: table.clientHeight * 0.39 };
+    const from = { x: table.clientWidth / 2, y: table.clientHeight * 0.405 };
     const [a, b] = delta > 0 ? [from, to] : [to, from];
     const n = Math.min(8, Math.abs(delta));
     for (let i = 0; i < n; i++) {
@@ -480,7 +481,7 @@
     $('[data-act="voice"]').classList.toggle('off', !ui.voice);
 
     // seats
-    const needTarget = ui.sel.action && C.ACTIONS[(S.hand.find((c) => c.uid === ui.sel.action) || {}).id]?.target;
+    const needTarget = false; // targets are chosen automatically (strongest rival card / VP leader)
     const winners = RV && RV.results ? RV.rv.winners : [];
     let seats = '';
     for (const p of opps) {
@@ -507,8 +508,8 @@
         if (!ui.sel.noun) hint = 'Pick the <b>word card</b> that best fits the challenge.';
         else if (!a) hint = 'Nice! Add an <b>action card</b> if you want, then press <b>Play</b>.';
         if (a) {
-          const tg = needTarget && S.players.find((p) => p.id === ui.sel.target);
-          hint = `<b>${C.ACTIONS[a.id].name}:</b> ${C.ACTIONS[a.id].desc}${tg ? ` Target: <b>${esc(tg.name)}</b>${opps.length > 1 ? ' (tap a player to change)' : ''}` : ''}` + (ui.sel.noun ? '' : ' Now pick a word card.');
+          const auto = C.ACTIONS[a.id].target ? ' <i>It picks its target automatically.</i>' : '';
+          hint = `<b>${C.ACTIONS[a.id].name}:</b> ${C.ACTIONS[a.id].desc}${auto}` + (ui.sel.noun ? '' : ' Now pick a word card.');
         }
         const canDisc = me.discardsLeft > 0 || me.vp >= S.discardCost;
         controls = `<button class="btn big" data-act="play" ${ui.sel.noun ? '' : 'disabled'}>Play card ▶</button>
@@ -568,7 +569,7 @@
     let html = '';
     for (const r of RV.rv.results) {
       const s = G.seats[r.id]; if (!s) continue;
-      const side = s.type === 'top';
+      const side = s.type === 'top' || s.type === 'me';
       const x = side ? s.slot.x - G.cw * 0.42 : s.slot.x;
       const y = side ? s.slot.y + G.ch * 0.12 : s.slot.y + G.ch * 0.375 * (1 + (r.mod || 0) * 0.06);
       html += `<div class="badge ${side ? 'side' : ''} ${r.win ? 'win' : ''} ${r.bust ? 'bust' : ''}" style="left:${x}px;top:${y}px">
@@ -589,8 +590,7 @@
     }).join('');
     const html = `<div class="rhead">Round ${rv.round} · ${esc(rv.finalChallenge.title)}${rv.mult > 1 ? ' <span class="x2">×' + rv.mult + '</span>' : ''}</div>
       <div class="lines">${rv.lines.map((l, i) => `<p class="${i ? 'sub' : 'main'}">${esc(l)}</p>`).join('')}</div>
-      <div class="dchips">${chips}</div>
-      <div class="row"><button class="btn ghost small" data-act="say">🔊 Hear it</button>${host ? `${!S.settings.rounds || rv.round < S.settings.rounds ? '<button class="btn" data-act="next">Next round ▶</button>' : '<button class="btn" data-act="next">See results ▶</button>'}${!S.settings.rounds ? '<button class="btn red small" data-act="finish">Finish game</button>' : ''}` : '<span class="small">Next round starting soon…</span>'}</div>`;
+      <div class="row"><div class="dchips">${chips}</div><button class="btn ghost small" data-act="say">🔊 Hear it</button>${host ? `${!S.settings.rounds || rv.round < S.settings.rounds ? '<button class="btn" data-act="next">Next round ▶</button>' : '<button class="btn" data-act="next">See results ▶</button>'}${!S.settings.rounds ? '<button class="btn red small" data-act="finish">Finish game</button>' : ''}` : '<span class="small">Next round starting soon…</span>'}</div>`;
     setHTML(box, html);
   }
 
@@ -647,7 +647,6 @@
     else {
       ui.sel.action = ui.sel.action === key ? null : key;
       ui.sel.target = null;
-      if (ui.sel.action && C.ACTIONS[c.id].target) ui.sel.target = (orderOpps()[0] || {}).id || null;
     }
     render();
   });

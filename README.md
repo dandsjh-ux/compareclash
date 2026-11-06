@@ -4,7 +4,7 @@ A multiplayer card battle for young learners that practises **vocabulary** and *
 (*bigger, faster, more expensive, the heaviest…*). Two to four players sit around a tabletop,
 read the challenge card and play the word card that fits best.
 
-- **100-card deck**: 84 illustrated nouns in 7 categories (animals, food, transport, buildings, home, nature, toys) plus 16 action cards
+- **120-card deck**: 104 illustrated nouns in 7 categories (animals, food, transport, buildings, home, nature, toys) plus 16 action cards
 - **Hand of 6**, refilled after every round. **3 free discards** per game (up to 2 cards each), then 3 VP each
 - **Vocab Points (VP)**: everyone starts with 20. Winning a round pays 5 VP
 - **Gambit** (optional, chosen in the lobby): bet that you'll WIN (pays 1:1) or LOSE (pays 2:1), up to a third of your VP. Switch it **Off** for younger children: there's no betting, VP only come from winning rounds, and the 2 Peek cards are taken out of the deck
@@ -54,6 +54,7 @@ Games are kept in memory. Restarting or redeploying the service ends any games i
 2. Each player plays **one word card** face down, plus **one optional action card**.
 3. **Gambit**: players bet (or don't).
 4. **Reveal**: cards flip, actions resolve in this order: Reverse → Swap → Boost/Shrink → Double → Steal. Shield and Mirror protect against targeted actions.
+   Targets are chosen automatically: Swap, Shrink and Peek always hit the **strongest rival card** for the challenge (after any Reverse), and Steal always hits the **VP leader**. Ties are broken at random.
 5. The winner gets 5 VP and bets are paid. Then the sentence appears.
 
 Choose **5, 10 or 15 rounds**, or **Free Play**. The highest earner at the end wins. In Free Play there is no round limit; the host presses **Finish game** whenever they like.
@@ -62,14 +63,14 @@ Choose **5, 10 or 15 rounds**, or **Free Play**. The highest earner at the end w
 | Card | Qty | Effect |
 |---|---|---|
 | Reverse | 2 | Flips the challenge (bigger ↔ smaller, closest ↔ furthest) |
-| Swap | 2 | Swap your played word card with another player's |
-| Shrink | 2 | Another player's card loses 2 power |
+| Swap | 2 | Swap your played word card with the strongest rival card |
+| Shrink | 2 | The strongest rival card loses 2 power |
 | Boost | 3 | Your card gains 2 power |
 | Shield | 2 | Blocks Swap, Shrink, Steal and Peek aimed at you |
 | Mirror | 1 | Bounces a targeted action back at the sender |
-| Peek | 2 | See another player's card before you bet |
+| Peek | 2 | See the strongest rival card before you bet |
 | Double | 1 | Doubles the prize and all bets this round |
-| Steal | 1 | Take a random card from another player's hand |
+| Steal | 1 | Take a random card from the VP leader's hand |
 
 ### How cards are judged
 Every noun stores real-world values in `public/cards.js`:

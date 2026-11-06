@@ -288,10 +288,7 @@ function doPlay(room, p, nounUid, actionUid, targetId) {
   if (!n) return;
   let a = null, target = null;
   if (actionUid) { a = p.hand.find((c) => c.uid === actionUid && c.type === 'action'); if (!a) return; }
-  if (a && C.ACTIONS[a.id].target) {
-    const others = room.players.filter((o) => o.id !== p.id);
-    target = (others.find((o) => o.id === targetId) || others[0]).id;
-  }
+  // targeted actions (Swap, Shrink, Peek, Steal) pick their target automatically when they resolve
   p.hand = p.hand.filter((c) => c !== n && c !== a);
   p.play = { noun: n, action: a, target, order: room.playOrder++ };
   if (room.players.every((q) => q.play)) startBet(room); else broadcast(room);
@@ -312,6 +309,20 @@ function doDiscard(room, p, uids) {
   return true;
 }
 
+/* Targeted actions always hit the most relevant rival:
+   Swap / Shrink / Peek → the strongest rival card for the challenge; Steal → the VP leader. Ties are broken at random. */
+function autoTarget(src, actionId, ch, plays) {
+  let best = -Infinity, ties = [];
+  for (const x of plays) {
+    if (x.p === src) continue;
+    let sc;
+    if (actionId === 'steal') sc = x.p.vp;
+    else { const ev = C.evaluate(ch, N(x.noun.id)); sc = ev.bust ? -100 : ev.strength + (x.mod || 0); }
+    if (sc > best + 1e-9) { best = sc; ties = [x.p]; } else if (Math.abs(sc - best) < 1e-9) ties.push(x.p);
+  }
+  return ties.length ? pick(ties) : null;
+}
+
 /* Shield blocks targeted actions; Mirror bounces them back at the sender. */
 function resolveTarget(src, tgt) {
   if (!tgt || tgt === src) return { none: true };
@@ -327,10 +338,14 @@ function startBet(room) {
     return resolveRound(room);
   }
   room.phaseId++; room.phase = 'bet'; room.peeks = {};
+  const flips = room.players.filter((q) => q.play.action && q.play.action.id === 'reverse').length;
+  const chNow = { ...room.challenge, high: flips % 2 ? !room.challenge.high : room.challenge.high };
+  const peekPlays = room.players.map((q) => ({ p: q, noun: q.play.noun, mod: 0 }));
   for (const p of room.players) {
     const a = p.play.action;
     if (!a || a.id !== 'peek') continue;
-    const t = byId(room, p.play.target);
+    const t = autoTarget(p, 'peek', chNow, peekPlays);
+    p.play.target = t && t.id;
     const r = resolveTarget(p, t);
     if (r.none) continue;
     if (r.blocked) room.peeks[p.id] = { blocked: true, name: t.name };
@@ -431,7 +446,7 @@ function resolveRound(room) {
   const ordered = [...plays].sort((x, y) => x.order - y.order);
   const withA = (id) => ordered.filter((x) => x.action && x.action.id === id);
   const targeted = (x, verb, fn) => {
-    const t = byId(room, x.target);
+    const t = x.action.id === 'peek' ? byId(room, x.target) : autoTarget(x.p, x.action.id, ch, plays);
     const r = resolveTarget(x.p, t);
     if (r.none) return;
     if (r.blocked) { steps.push({ t: 'blocked', by: x.p.id, on: t.id, text: `${t.name}'s SHIELD blocks ${x.p.name}'s ${verb}!` }); return; }
@@ -445,12 +460,12 @@ function resolveRound(room) {
   for (const x of withA('swap')) targeted(x, 'SWAP', (r, t) => {
     const X = P(x.p.id), Y = P(t.id);
     [X.noun, Y.noun] = [Y.noun, X.noun];
-    steps.push({ t: 'swap', by: x.p.id, a: x.p.id, b: t.id, text: r.reflected ? `${t.name}'s MIRROR can't stop a SWAP — cards swapped!` : `${x.p.name} SWAPS cards with ${t.name}!` });
+    steps.push({ t: 'swap', by: x.p.id, a: x.p.id, b: t.id, text: r.reflected ? `${t.name}'s MIRROR can't stop a SWAP — cards swapped!` : `${x.p.name} SWAPS with the strongest card: ${t.name}'s!` });
   });
   for (const x of withA('boost')) { x.mod += 2; steps.push({ t: 'boost', on: x.p.id, text: `${x.p.name} BOOSTS their card: +2 power!` }); }
   for (const x of withA('shrink')) targeted(x, 'SHRINK', (r) => {
     P(r.tgt.id).mod -= 2;
-    steps.push({ t: 'shrink', by: r.src.id, on: r.tgt.id, text: r.reflected ? `${r.src.name}'s MIRROR bounces the SHRINK back at ${r.tgt.name}!` : `${x.p.name} SHRINKS ${r.tgt.name}'s card: −2 power!` });
+    steps.push({ t: 'shrink', by: r.src.id, on: r.tgt.id, text: r.reflected ? `${r.src.name}'s MIRROR bounces the SHRINK back at ${r.tgt.name}!` : `${x.p.name} SHRINKS the strongest card — ${r.tgt.name}'s: −2 power!` });
   });
   let mult = 1;
   for (const x of withA('double')) { mult *= 2; steps.push({ t: 'double', by: x.p.id, text: `${x.p.name} played DOUBLE — ${room.settings.gambit ? 'prize and bets' : 'prize'} ×2!` }); }
@@ -492,7 +507,7 @@ function resolveRound(room) {
     if (!victim.hand.length) { steps.push({ t: 'steal', by: thief.id, on: victim.id, text: `${thief.name} tried to STEAL, but ${victim.name}'s hand is empty!` }); return; }
     const card = victim.hand.splice(Math.floor(Math.random() * victim.hand.length), 1)[0];
     thief.hand.push(card);
-    steps.push({ t: 'steal', by: thief.id, on: victim.id, text: r.reflected ? `${victim.name}'s steal bounced off a MIRROR — ${thief.name} takes a card instead!` : `${thief.name} STEALS a card from ${victim.name}!` });
+    steps.push({ t: 'steal', by: thief.id, on: victim.id, text: r.reflected ? `${victim.name}'s steal bounced off a MIRROR — ${thief.name} takes a card instead!` : `${thief.name} STEALS a card from the leader, ${victim.name}!` });
   });
 
   const lines = buildLines(ch, plays, winners);
@@ -554,8 +569,7 @@ function botPlay(room, p, randomPick) {
     else if (has('shield') && roll < 0.25) action = has('shield');
     else if (has('mirror') && roll < 0.25) action = has('mirror');
   }
-  const target = action && C.ACTIONS[action.id].target ? pick(room.players.filter((o) => o.id !== p.id)).id : null;
-  doPlay(room, p, choice.c.uid, action && action.uid, target);
+  doPlay(room, p, choice.c.uid, action && action.uid, null);
 }
 function botBet(room, p) {
   if (room.phase !== 'bet' || p.bet) return;
@@ -684,4 +698,4 @@ function onConnection(socket) {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Compare Clash running on http://localhost:${PORT}`));
-module.exports = { server, rooms };
+module.exports = { server, rooms, autoTarget };
